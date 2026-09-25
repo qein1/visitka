@@ -150,15 +150,30 @@ function readCatalog() {
   }
 }
 
+/** Похоже на настоящий адрес? Отсекаем мусор из переменных окружения. */
+function looksLikeUrl(s) {
+  return /^https?:\/\/[A-Za-z0-9.-]+(:\d+)?(\/\S*)?$/.test(String(s || '').trim());
+}
+
 /** Адрес сайта для редиректов.
- *  Если PUBLIC_URL задан — берём его. Иначе собираем из заголовков запроса,
- *  чтобы работало на любом хостинге (Railway, Render, Fly) без настройки. */
+ *  PUBLIC_URL wins, but only if it actually looks like an address:
+ *  Railway has a habit of putting junk in it, and a junk address
+ *  sends the client nowhere. Otherwise we assemble it from the request
+ *  headers, so it works on any host without configuration. */
 function publicBase(req) {
-  if (process.env.PUBLIC_URL) return PUBLIC_URL;
-  if (!req) return `http://localhost:${PORT}`;
-  const proto = String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim();
-  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
-  return host ? `${proto}://${host}` : `http://localhost:${PORT}`;
+  const configured = String(process.env.PUBLIC_URL || '').trim().replace(/\/+$/, '');
+  if (looksLikeUrl(configured)) return configured;
+
+  if (req) {
+    const proto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+    const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+    if (/^[A-Za-z0-9.-]+(:\d+)?$/.test(host)) {
+      // За обратным прокси безопаснее https, локально — http.
+      const scheme = proto || (host.startsWith('localhost') || host.startsWith('127.') ? 'http' : 'https');
+      return `${scheme}://${host}`;
+    }
+  }
+  return `http://localhost:${PORT}`;
 }
 
 const isEmail = (s) =>
@@ -780,6 +795,10 @@ server.listen(PORT, '0.0.0.0', () => {
     log('оплата: ВНИМАНИЕ — PAY_MODE=live, но ключи не заданы');
   }
   log(`вебхук: ${PUBLIC_URL}/api/webhook`);
+  if (process.env.PUBLIC_URL && !looksLikeUrl(process.env.PUBLIC_URL)) {
+    log('!! PUBLIC_URL выглядит не как адрес — игнорирую, беру из заголовков запроса.');
+    log('   Значение:', process.env.PUBLIC_URL);
+  }
 });
 
 server.on('error', (e) => {
