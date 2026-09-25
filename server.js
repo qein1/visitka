@@ -150,6 +150,17 @@ function readCatalog() {
   }
 }
 
+/** Адрес сайта для редиректов.
+ *  Если PUBLIC_URL задан — берём его. Иначе собираем из заголовков запроса,
+ *  чтобы работало на любом хостинге (Railway, Render, Fly) без настройки. */
+function publicBase(req) {
+  if (process.env.PUBLIC_URL) return PUBLIC_URL;
+  if (!req) return `http://localhost:${PORT}`;
+  const proto = String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim();
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+  return host ? `${proto}://${host}` : `http://localhost:${PORT}`;
+}
+
 const isEmail = (s) =>
   typeof s === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim());
 
@@ -196,7 +207,8 @@ async function handleCreatePayment(req, res) {
   }
 
   const orderId = crypto.randomUUID();
-  const returnUrl = `${PUBLIC_URL}/?paid=1&order=${encodeURIComponent(orderId)}`;
+  const base = publicBase(req);
+  const returnUrl = `${base}/?paid=1&order=${encodeURIComponent(orderId)}`;
 
   let payment;
   if (PAY_MODE === 'mock') {
@@ -207,7 +219,7 @@ async function handleCreatePayment(req, res) {
       id: mockId,
       status: 'pending',
       amount: { value: money(amountRaw), currency: CURRENCY },
-      confirmation: { type: 'redirect', confirmation_url: `${PUBLIC_URL}/mock-pay/${mockId}` },
+      confirmation: { type: 'redirect', confirmation_url: `${base}/mock-pay/${mockId}` },
     };
     pending.set(mockId, {
       id: mockId,
@@ -745,6 +757,8 @@ const server = http.createServer((req, res) => {
       ok: true,
       mode: PAY_MODE,
       paymentConfigured: PAY_MODE === 'live' ? Boolean(SHOP_ID && SECRET_KEY) : true,
+      publicUrl: publicBase(req),
+      dataDir: DATA_DIR,
     });
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') {
