@@ -4,6 +4,11 @@ data/orders.ndjson
 data/.session-secret
 data/*.tmp
 
+# Переменные окружения с ключами
+.env
+.env.*
+!.env.example
+
 # Прочее
 node_modules/
 .DS_Store
