@@ -1,0 +1,20 @@
+{
+  "name": "visitka",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт-визитка на чистом HTML/CSS/JS с приёмом оплаты и кабинетом на Node без зависимостей",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --env-file=.env server.js",
+    "check": "node --check server.js && node --check auth.js && node --check script.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {}
+}
