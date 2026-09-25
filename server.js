@@ -23,7 +23,9 @@ const PORT = Number(process.env.PORT || 3000);
 const SHOP_ID = process.env.YOOKASSA_SHOP_ID || '';
 const SECRET_KEY = process.env.YOOKASSA_SECRET_KEY || '';
 const PUBLIC_URL = (process.env.PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/+$/, '');
-const ORDERS_FILE = path.join(ROOT, 'data', 'orders.ndjson');
+// Каталог данных можно вынести на диск хостинга через переменную DATA_DIR.
+const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, 'data');
+const ORDERS_FILE = path.join(DATA_DIR, 'orders.ndjson');
 
 // Режим оплаты:
 //   'mock' — поддельный провайдер, полностью офлайн, ключи не нужны (по умолчанию)
@@ -139,10 +141,11 @@ function saveOrder(record) {
 /** Прайс нужен серверу, чтобы не доверять сумме из браузера. */
 function readCatalog() {
   try {
-    const file = path.join(ROOT, 'data', 'services.json');
+    const file = path.join(DATA_DIR, 'services.json');
     const parsed = JSON.parse(fs.readFileSync(file, 'utf8'));
     return Array.isArray(parsed) ? parsed : [];
-  } catch (_) {
+  } catch (e) {
+    if (e.code !== 'ENOENT') log('!! не читается data/services.json:', e.message);
     return [];
   }
 }
@@ -750,8 +753,11 @@ const server = http.createServer((req, res) => {
   return serveStatic(req, res);
 });
 
-server.listen(PORT, () => {
+// Явно 0.0.0.0: хостинги (Railway, Render, Fly) стучатся по внешнему адресу,
+// и процесс, слушающий только localhost, снаружи не виден.
+server.listen(PORT, '0.0.0.0', () => {
   log(`сайт:   ${PUBLIC_URL}`);
+  log(`данные: ${DATA_DIR}`);
   if (PAY_MODE === 'mock') {
     log('оплата: МОК-режим — реальных денег нет, ключи не нужны');
   } else if (SHOP_ID && SECRET_KEY) {
@@ -760,5 +766,12 @@ server.listen(PORT, () => {
     log('оплата: ВНИМАНИЕ — PAY_MODE=live, но ключи не заданы');
   }
   log(`вебхук: ${PUBLIC_URL}/api/webhook`);
+});
+
+server.on('error', (e) => {
+  log(`!! ошибка сервера: ${e.message}`);
+  if (e.code === 'EADDRINUSE') log('   порт занят — задай PORT другой: PORT=3001 node server.js');
+  if (e.code === 'EACCES') log('   нет прав на порт — задай PORT больше 1024');
+  process.exit(1);
 });
 
