@@ -534,6 +534,11 @@
   if (payBtns.length) {
     payBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
+        // Без бэкенда платёж невозможен — не открываем форму, а объясняем.
+        if (backendUp === false) {
+          toast('Оплата доступна на боевом сервере — эта версия статичная');
+          return;
+        }
         payOpen(btn.getAttribute('data-name'), Number(btn.getAttribute('data-price')) || 0);
       });
     });
@@ -673,8 +678,47 @@
   }
 
   /** Статус пользователя + раздел «про». */
+  // Сайт могут открыть и без бэкенда: на статическом хостинге (GitHub Pages)
+  // или просто двойным кликом по файлу. Проверяем бэкенд один раз и, если его
+  // нет, честно гасим кнопки, которые всё равно не сработают.
+  let backendUp = null;
+
+  async function checkBackend() {
+    if (location.protocol === 'file:') return false;
+    if (backendUp !== null) return backendUp;
+    try {
+      const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), 2500) : null;
+      const res = await fetch('/api/health', {
+        credentials: 'same-origin',
+        signal: ctrl ? ctrl.signal : undefined,
+      });
+      if (timer) clearTimeout(timer);
+      backendUp = res.ok;
+    } catch (_) {
+      backendUp = false;
+    }
+    return backendUp;
+  }
+
+  /** Без бэкенда кнопки оплаты бесполезны — прячем их, чтобы не врать. */
+  function applyStaticMode() {
+    document.documentElement.setAttribute('data-no-backend', '1');
+    if (cabBtn) cabBtn.hidden = true;
+    $$('[data-pay]').forEach((b) => {
+      b.disabled = true;
+      b.title = 'Оплата доступна на боевом сервере';
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        toast('Оплата доступна на боевом сервере — эта версия статичная');
+      }, { once: true });
+    });
+    if (vipEl) vipEl.innerHTML = '';
+  }
+
   async function refreshMe() {
-    if (location.protocol === 'file:') return;
+    if (!(await checkBackend())) { applyStaticMode(); return; }
+
     try {
       const { data } = await api('/api/me');
       me = data.user || null;
