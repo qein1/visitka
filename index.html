@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Александр Волков — веб-разработчик и UI-дизайнер</title>
+<meta name="description" content="Сайты и интерфейсы, которые выглядят дорого и работают быстро. 6 лет опыта, 40+ проектов." />
+<meta name="theme-color" content="#0a0a0b" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230a0a0b'/%3E%3Ctext x='50' y='68' font-size='54' font-family='Georgia,serif' fill='%23e8ff4d' text-anchor='middle'%3EА%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+
+<div class="preloader" id="preloader">
+  <div class="pre-mark"><span>АВ</span><b id="preCount">0</b></div>
+  <div class="pre-bar"><i id="preBar"></i></div>
+  <p class="pre-txt">загружаю портфолио</p>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true">
+  <span class="cur-dot"></span>
+  <span class="cur-ring"><b class="cur-txt"></b></span>
+</div>
+
+<canvas class="stars" id="stars" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="scan" aria-hidden="true"></div>
+<div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+
+<header class="nav" id="nav">
+  <a class="logo" href="#hero" data-cursor="вверх">
+    <span class="logo-seal">АВ</span>
+    <span class="logo-txt">Александр<br />Волков</span>
+  </a>
+  <nav class="nav-mid">
+    <a href="#about" data-cursor="смотреть"><i>01</i>Обо мне</a>
+    <a href="#work" data-cursor="смотреть"><i>02</i>Работы</a>
+    <a href="#process" data-cursor="смотреть"><i>03</i>Процесс</a>
+    <a href="#contact" data-cursor="написать"><i>04</i>Контакты</a>
+  </nav>
+  <div class="nav-right">
+    <button class="cab-btn" id="cabBtn" type="button" aria-label="Личный кабинет">
+      <span class="cab-dot" id="cabDot"></span><span id="cabTxt">Войти</span>
+    </button>
+    <button class="theme" id="theme" data-cursor="тема" aria-label="Сменить тему"><span id="themeTxt">Ночь</span></button>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <nav>
+    <a href="#about"><i>01</i>Обо мне</a>
+    <a href="#work"><i>02</i>Работы</a>
+    <a href="#process"><i>03</i>Процесс</a>
+    <a href="#services"><i>04</i>Услуги</a>
+    <a href="#contact"><i>05</i>Контакты</a>
+  </nav>
+  <div class="drawer-foot">
+    <a href="mailto:hello@volkov.dev">hello@volkov.dev</a>
+    <a href="tel:+79991234567">+7 999 123-45-67</a>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-in">
+    <p class="eyebrow"><span class="live"></span>Свободен для новых проектов</p>
+
+    <h1 class="title">
+      <span class="mask"><span class="mask-in" data-shift>Сайты, которые</span></span>
+      <span class="mask"><span class="mask-in" data-shift data-delay="1"><em>выглядят</em> дорого</span></span>
+      <span class="mask"><span class="mask-in" data-shift data-delay="2">и <em>работают</em> быстро</span></span>
+    </h1>
+
+    <div class="hero-foot">
+      <p class="hero-lead">Меня зовут Александр. Шесть лет собираю цифровые продукты для бизнеса — от лендинга до сложной платформы.</p>
+      <div class="hero-acts">
+        <a href="#work" class="mag" data-cursor="далее">
+          <span>Смотреть работы</span>
+          <svg class="ico" viewBox="0 0 24 24"><path d="M4 12h15M13 5.5 19.5 12 13 18.5"/></svg>
+        </a>
+        <button class="line-btn" id="copyTop" data-copy="hello@volkov.dev" data-cursor="копировать"><span>Скопировать почту</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-meta">
+    <div class="hm"><b data-count="6">0</b><span>лет опыта</span></div>
+    <div class="hm"><b data-count="40" data-suffix="+">0</b><span>проектов</span></div>
+    <div class="hm"><b data-count="98" data-suffix="%">0</b><span>возвращаются</span></div>
+    <div class="hm-line"><span></span></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="mq-track">
+    <div class="mq-set">
+      <span>Разработка</span><i>✦</i><span>Дизайн</span><i>✦</i><span>Анимации</span><i>✦</i>
+      <span>Брендинг</span><i>✦</i><span>Оптимизация</span><i>✦</i><span>Автоматизация</span><i>✦</i>
+    </div>
+    <div class="mq-set">
+      <span>Разработка</span><i>✦</i><span>Дизайн</span><i>✦</i><span>Анимации</span><i>✦</i>
+      <span>Брендинг</span><i>✦</i><span>Оптимизация</span><i>✦</i><span>Автоматизация</span><i>✦</i>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="sec about" id="about">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2 class="sec-title">Немного <em>обо мне</em></h2>
+  </div>
+
+  <div class="bento">
+    <div class="b-cell b-big reveal" data-r>
+      <p class="b-text">Я верю в простоту: у хорошего продукта всё на своих местах, а лишнее — только мешает. Поэтому совмещаю <b>дизайн и разработку</b>, и идея не теряется по дороге.</p>
+      <span class="b-spark">✦</span>
+    </div>
+
+    <div class="b-cell b-portrait reveal" data-r data-rd="1">
+      <div class="portrait">
+        <div class="portrait-face">АВ</div>
+        <div class="portrait-ring"></div>
+      </div>
+      <div class="portrait-tag">
+        <b>Александр Волков</b>
+        <span>веб-разработчик · UI-дизайнер</span>
+      </div>
+    </div>
+
+    <div class="b-cell b-stack reveal" data-r data-rd="2">
+      <h3>Стек</h3>
+      <ul class="stack">
+        <li><span>JavaScript / TS</span><b>90</b></li>
+        <li><span>HTML / CSS</span><b>95</b></li>
+        <li><span>React / Next</span><b>88</b></li>
+        <li><span>Node.js</span><b>78</b></li>
+        <li><span>Figma</span><b>85</b></li>
+      </ul>
+    </div>
+
+    <div class="b-cell b-quote reveal" data-r data-rd="3">
+      <blockquote>«Сначала смысл, потом красота. Но красота тоже обязательна»</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="sec work" id="work">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2 class="sec-title">Избранные <em>работы</em></h2>
+    <span class="sec-hint">→ листайте</span>
+  </div>
+
+  <div class="hscroll" id="hscroll">
+    <div class="hs-track" id="hsTrack">
+
+      <article class="w-card tilt" data-cursor="кейс">
+        <div class="w-vis wv1">
+          <div class="w-mock">
+            <div class="m-top"><i></i><i></i><i></i></div>
+            <div class="m-mid"><div class="m-hero"></div><div class="m-lines"><i></i><i></i><i></i></div></div>
+          </div>
+        </div>
+        <div class="w-info">
+          <span class="w-year">2025</span>
+          <h3>Ledger</h3>
+          <p>Финтех-кабинет с бюджетами и аналитикой. Ускорил загрузку с 4.1 до 0.9 с.</p>
+          <ul class="w-tags"><li>React</li><li>D3</li><li>REST</li></ul>
+        </div>
+        <span class="w-num">01</span>
+      </article>
+
+      <article class="w-card tilt" data-cursor="кейс">
+        <div class="w-vis wv2">
+          <div class="w-mock">
+            <div class="m-top"><i></i><i></i><i></i></div>
+            <div class="m-mid"><div class="m-hero"></div><div class="m-lines"><i></i><i></i><i></i></div></div>
+          </div>
+        </div>
+        <div class="w-info">
+          <span class="w-year">2024</span>
+          <h3>Kofe</h3>
+          <p>Сеть кофеен: онлайн-заказ, карта локаций, дизайн-система на 40+ компонентов.</p>
+          <ul class="w-tags"><li>Figma</li><li>CMS</li><li>ИПС</li></ul>
+        </div>
+        <span class="w-num">02</span>
+      </article>
+
+      <article class="w-card tilt" data-cursor="кейс">
+        <div class="w-vis wv3">
+          <div class="w-mock">
+            <div class="m-top"><i></i><i></i><i></i></div>
+            <div class="m-mid"><div class="m-hero"></div><div class="m-lines"><i></i><i></i><i></i></div></div>
+          </div>
+        </div>
+        <div class="w-info">
+          <span class="w-year">2024</span>
+          <h3>Mediq</h3>
+          <p>Телемедицина: консультации, чат с врачом, интеграция с ЭМК. Соответствует 152-ФЗ.</p>
+          <ul class="w-tags"><li>TypeScript</li><li>WebSocket</li><li>ИБ</li></ul>
+        </div>
+        <span class="w-num">03</span>
+      </article>
+
+      <article class="w-card tilt" data-cursor="кейс">
+        <div class="w-vis wv4">
+          <div class="w-mock">
+            <div class="m-top"><i></i><i></i><i></i></div>
+            <div class="m-mid"><div class="m-hero"></div><div class="m-lines"><i></i><i></i><i></i></div></div>
+          </div>
+        </div>
+        <div class="w-info">
+          <span class="w-year">2023</span>
+          <h3>Orbit</h3>
+          <p>SaaS-аналитика: кастомные отчёты, командная работа, аптайм 99.9%.</p>
+          <ul class="w-tags"><li>Node.js</li><li>Postgres</li><li>Docker</li></ul>
+        </div>
+        <span class="w-num">04</span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="sec process" id="process">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2 class="sec-title">Как я <em>работаю</em></h2>
+  </div>
+
+  <ol class="steps">
+    <li class="step reveal" data-r>
+      <span class="step-n">01</span>
+      <h3>Брифинг</h3>
+      <p>Разбираем задачу, аудиторию и метрики успеха. На выходе — понятное ТЗ и смета.</p>
+      <span class="step-t">1–2 дня</span>
+    </li>
+    <li class="step reveal" data-r data-rd="1">
+      <span class="step-n">02</span>
+      <h3>Прототип</h3>
+      <p>Собираю кликабельный макет, чтобы увидеть продукт раньше, чем потрачены деньги на код.</p>
+      <span class="step-t">3–5 дней</span>
+    </li>
+    <li class="step reveal" data-r data-rd="2">
+      <span class="step-n">03</span>
+      <h3>Дизайн и код</h3>
+      <p>Финальный визуал в Figma и параллельная вёрстка. Показываю результат каждые два дня.</p>
+      <span class="step-t">1–3 недели</span>
+    </li>
+    <li class="step reveal" data-r data-rd="3">
+      <span class="step-n">04</span>
+      <h3>Запуск</h3>
+      <p>Тесты, домен, аналитика, обучение команды. Дальше — поддержка и развитие продукта.</p>
+      <span class="step-t">2–4 дня</span>
+    </li>
+  </ol>
+</section>
+
+<!-- SERVICES -->
+<section class="sec services" id="services">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2 class="sec-title">Услуги и <em>цены</em></h2>
+  </div>
+
+  <div class="svc">
+    <div class="svc-row reveal" data-r>
+      <span class="svc-name">Лендинг</span>
+      <span class="svc-desc">Быстрый одностраничный сайт под одну цель</span>
+      <span class="svc-price">от 45 000 ₽</span>
+      <button class="svc-pay" type="button" data-pay data-name="Лендинг" data-price="45000">
+        Оплатить
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg>
+      </button>
+    </div>
+    <div class="svc-row reveal" data-r data-rd="1">
+      <span class="svc-name">Корпоративный сайт</span>
+      <span class="svc-desc">Многостраничник с CMS и админкой</span>
+      <span class="svc-price">от 120 000 ₽</span>
+      <button class="svc-pay" type="button" data-pay data-name="Корпоративный сайт" data-price="120000">
+        Оплатить
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg>
+      </button>
+    </div>
+    <div class="svc-row reveal" data-r data-rd="2">
+      <span class="svc-name">Интернет-магазин</span>
+      <span class="svc-desc">Каталог, корзина, оплата и доставка</span>
+      <span class="svc-price">от 180 000 ₽</span>
+      <button class="svc-pay" type="button" data-pay data-name="Интернет-магазин" data-price="180000">
+        Оплатить
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg>
+      </button>
+    </div>
+    <div class="svc-row reveal" data-r data-rd="3">
+      <span class="svc-name">Дизайн интерфейса</span>
+      <span class="svc-desc">UI-кит и дизайн-система в Figma</span>
+      <span class="svc-price">от 60 000 ₽</span>
+      <button class="svc-pay" type="button" data-pay data-name="Дизайн интерфейса" data-price="60000">
+        Оплатить
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg>
+      </button>
+    </div>
+    <div class="svc-row reveal" data-r data-rd="4">
+      <span class="svc-name">Поддержка</span>
+      <span class="svc-desc">Обновления, мониторинг, доработки</span>
+      <span class="svc-price">от 20 000 ₽ / мес</span>
+      <button class="svc-pay" type="button" data-pay data-name="Поддержка" data-price="20000">
+        Оплатить
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg>
+      </button>
+    </div>
+  </div>
+  <p class="sec-hint">Оплата проходит на защищённой странице ЮKassa — карта остаётся у платёжной системы</p>
+</section>
+
+<!-- QUOTES -->
+<section class="sec quotes" id="quotes">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <h2 class="sec-title">Говорят <em>клиенты</em></h2>
+  </div>
+
+  <div class="q-sl">
+    <div class="q-view" id="qView">
+      <div class="q-item is-on">
+        <span class="q-star">★★★★★</span>
+        <blockquote>Сайт сделал за три недели, хотя обещали месяц. Конверсия в заявку выросла почти вдвое.</blockquote>
+        <div class="q-per"><span class="q-av">ИП</span><div><b>Ирина П.</b><i>владелица Kofe</i></div></div>
+      </div>
+      <div class="q-item">
+        <span class="q-star">★★★★★</span>
+        <blockquote>Не просто «сверстал», а разобрался в нашем процессе и показал, где мы теряем клиентов.</blockquote>
+        <div class="q-per"><span class="q-av q2">МС</span><div><b>Максим С.</b><i>CTO Mediq</i></div></div>
+      </div>
+      <div class="q-item">
+        <span class="q-star">★★★★★</span>
+        <blockquote>Отвечает в течение часа и предлагает решения, а не проблемы. Ведёт проект на постоянной основе.</blockquote>
+        <div class="q-per"><span class="q-av q3">ДЛ</span><div><b>Дмитрий Л.</b><i>основатель Orbit</i></div></div>
+      </div>
+    </div>
+    <div class="q-nav">
+      <button class="q-btn" id="qPrev" aria-label="Предыдущий">←</button>
+      <div class="q-dots" id="qDots"></div>
+      <button class="q-btn" id="qNext" aria-label="Следующий">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec contact" id="contact">
+  <div class="sec-head">
+    <span class="sec-num">06</span>
+    <h2 class="sec-title">Давайте <em>соберём</em> проект</h2>
+  </div>
+
+  <div class="cont-grid">
+    <form class="form" id="form" novalidate>
+      <div class="f-f">
+        <label for="name">Как вас зовут</label>
+        <input type="text" id="name" name="name" placeholder="Имя" autocomplete="name" required />
+        <span class="f-e">Укажите, пожалуйста, имя</span>
+      </div>
+      <div class="f-f">
+        <label for="email">Почта для ответа</label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required />
+        <span class="f-e">Проверьте адрес почты</span>
+      </div>
+      <div class="f-f">
+        <label for="msg">О проекте</label>
+        <textarea id="msg" name="msg" rows="3" placeholder="Задача, сроки, бюджет" required></textarea>
+        <span class="f-e">Пара слов о задаче</span>
+      </div>
+      <button type="submit" class="mag mag-wide" data-cursor="отправить">
+        <span>Отправить заявку</span>
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 12h15M13 5.5 19.5 12 13 18.5"/></svg>
+      </button>
+      <p class="f-note">Демо-форма — данные никуда не уходят.</p>
+    </form>
+
+    <div class="cont-side">
+      <p class="cont-lead">Расскажите о задаче — отвечу в течение рабочего дня и предложу план действий с оценкой по срокам.</p>
+      <a class="cont-row copy" href="mailto:hello@volkov.dev" data-copy="hello@volkov.dev" data-cursor="копировать">
+        <span class="c-lbl">Почта</span><span class="c-val">hello@volkov.dev</span><span class="c-ic">↗</span>
+      </a>
+      <a class="cont-row copy" href="tel:+79991234567" data-copy="+7 999 123-45-67" data-cursor="позвонить">
+        <span class="c-lbl">Телефон</span><span class="c-val">+7 999 123-45-67</span><span class="c-ic">↗</span>
+      </a>
+      <a class="cont-row" href="#" data-cursor="telegram">
+        <span class="c-lbl">Telegram</span><span class="c-val">@volkov_dev</span><span class="c-ic">↗</span>
+      </a>
+      <div class="cont-row st">
+        <span class="c-lbl">Часы работы</span><span class="c-val">Пн–Пт, 10:00–19:00</span><span class="c-ic">◷</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Секция «про». Содержимое приходит с сервера: без статуса «про» её там нет. -->
+<section class="sec" id="vip"></section>
+
+</main>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="foot-big">
+    <span class="foot-word">Поговорим?</span>
+    <a href="mailto:hello@volkov.dev" class="foot-mail" data-cursor="написать">hello@volkov.dev</a>
+  </div>
+  <div class="foot-btm">
+<!-- ОПЛАТА -->
+<!-- КАБИНЕТ -->
+<div class="cab" id="cab" aria-hidden="true">
+  <div class="cab-bd" data-cab-close></div>
+  <div class="cab-box" role="dialog" aria-modal="true" aria-labelledby="cabTitle">
+    <button class="cab-x" type="button" data-cab-close aria-label="Закрыть">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg>
+    </button>
+
+    <!-- Вход и регистрация -->
+    <div id="cabAuth">
+      <span class="sec-num">Кабинет</span>
+      <h3 class="cab-title" id="cabTitle">Войти в аккаунт</h3>
+      <p class="cab-sub" id="cabSub">Статус «про» открывается автоматически после оплаты.</p>
+
+      <div class="cab-tabs" role="tablist">
+        <button type="button" class="cab-tab on" data-tab="login" role="tab">Вход</button>
+        <button type="button" class="cab-tab" data-tab="reg" role="tab">Регистрация</button>
+      </div>
+
+      <form class="cab-form" id="cabForm" novalidate>
+        <div class="cab-f" data-only="reg">
+          <label for="cabName">Как вас зовут</label>
+          <input type="text" id="cabName" autocomplete="name" placeholder="Вася">
+        </div>
+        <div class="cab-f">
+          <label for="cabEmail">Почта</label>
+          <input type="email" id="cabEmail" autocomplete="email" placeholder="you@example.com" required>
+        </div>
+        <div class="cab-f">
+          <label for="cabPass">Пароль</label>
+          <input type="password" id="cabPass" autocomplete="current-password" required>
+        </div>
+        <p class="pay-err" id="cabErr" role="alert" hidden></p>
+        <button class="mag mag-wide" type="submit" id="cabSubmit"><span>Войти</span></button>
+        <p class="pay-note" id="cabNote">Пароль хранится только в виде хеша — восстановить его нельзя.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Секция для пользователей со статусом «про». Содержимое приходит с сервера. -->
+
+
+<div class="pay" id="pay" aria-hidden="true">
+  <div class="pay-bd" data-close></div>
+  <div class="pay-box" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+    <button class="pay-x" type="button" data-close aria-label="Закрыть">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg>
+    </button>
+
+    <span class="sec-num">Оплата</span>
+    <h3 class="pay-title" id="payTitle">Перейти к оплате</h3>
+    <p class="pay-sub">Оплата проходит на защищённой странице ЮKassa. Данные карты сайту не передаются.</p>
+
+    <form class="pay-form" id="payForm" novalidate>
+      <div class="pay-f">
+        <label for="payEmail">Почта для чека</label>
+        <input type="email" id="payEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+        <span class="pay-e" data-err="email"></span>
+      </div>
+
+      <div class="pay-f">
+        <label for="payAmount">Сумма, ₽</label>
+        <input type="number" id="payAmount" name="amount" min="100" step="100" inputmode="numeric" required>
+        <span class="pay-e" data-err="amount"></span>
+      </div>
+
+      <p class="pay-err" id="payErr" role="alert" hidden></p>
+
+      <button class="mag mag-wide" type="submit" id="paySubmit">
+        <span>Оплатить</span>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg>
+      </button>
+
+      <p class="pay-note">Нажимая «Оплатить», вы переходите на страницу ЮKassa. Списание произойдёт только после подтверждения.</p>
+    </form>
+  </div>
+</div>
+
+
+    <p>© <span id="year">2026</span> Александр Волков</p>
+    <div class="foot-soc"><a href="#">Telegram</a><a href="#">GitHub</a><a href="#">Behance</a></div>
+    <a href="#hero" class="foot-up" data-cursor="вверх">↑ Наверх</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

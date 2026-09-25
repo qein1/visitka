@@ -1,0 +1,10 @@
+# Данные и секреты — никогда не в репозиторий
+data/users.json
+data/orders.ndjson
+data/.session-secret
+data/*.tmp
+
+# Прочее
+node_modules/
+.DS_Store
+*.log
